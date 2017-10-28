@@ -6,5 +6,5 @@ Instead of building all dependencies and subdependencies with Webpack, it's reco
 import the pre-built suman.js file for front-end testing.
 
 ```html
-<script src="node_modules/suman-browser/suman.js"></script>
+<script src="node_modules/suman-browser/dist/suman.js"></script>
 ```
