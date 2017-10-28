@@ -1,8 +1,10 @@
 {
   "name": "suman-browser",
   "version": "0.0.101",
-  "description": "A Webpack build of the Suman module, for use with RequireJS, SystemJS and Browserify",
-  "main": "suman.js",
+  "description": "A Webpack build of the Suman module, for use with RequireJS, SystemJS and Browserify, etc.",
+  "typings": "index.d.ts",
+  "types": "index.d.ts",
+  "main": "index.js",
   "scripts": {
     "test": "suman"
   },
@@ -23,5 +25,14 @@
   "bugs": {
     "url": "https://github.com/sumanjs/suman-browser/issues"
   },
-  "homepage": "https://github.com/sumanjs/suman-browser#readme"
+  "homepage": "https://github.com/sumanjs/suman-browser#readme",
+  "dependencies": {
+    "replacestream": "^4.0.3",
+    "webpack": "^3.8.1",
+    "webpack-stream": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/core-js": "^0.9.43",
+    "@types/node": "^8.0.47"
+  }
 }
