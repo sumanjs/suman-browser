@@ -1,2 +1,1 @@
-import { ISumanConfig, ISumanOpts } from "suman-types/dts/global";
-export declare const get: (projectRoot: string, sumanConf: ISumanConfig, sumanOpts: ISumanOpts) => () => any;
+export declare const makeGetBrowserStream: (sumanHelperDir: string, sumanConf: any, sumanOpts: any) => (port: number, id: number, cb: Function) => void;
