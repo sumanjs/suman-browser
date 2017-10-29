@@ -2130,6 +2130,7 @@ exports.constants = Object.freeze({
         SUCCESSFUL_RUN: 0,
         WHOLE_TEST_SUITE_SKIPPED: 0,
         GREP_SUITE_DID_NOT_MATCH: 0,
+        COULD_NOT_LOAD_A_REPORTER: 48,
         FILE_OR_DIRECTORY_DOES_NOT_EXIST: 49,
         SUMAN_PRE_NOT_FOUND_IN_YOUR_PROJECT: 50,
         SUMAN_HELPER_FILE_DOES_NOT_EXPORT_EXPECTED_FUNCTION: 51,
@@ -32072,11 +32073,11 @@ var chalk = __webpack_require__(83);
 exports.getLogger = function (reporterName) {
     reporterName = reporterName || 'browser-reporting';
     return {
-        info: console.log.bind(console, " [suman-" + reporterName + "] "),
-        warning: console.error.bind(console, chalk.yellow(" [suman-" + reporterName + "] ")),
-        error: console.error.bind(console, chalk.red(" [suman-" + reporterName + "] ")),
-        good: console.error.bind(console, chalk.cyan(" [suman-" + reporterName + "] ")),
-        veryGood: console.log.bind(console, chalk.green(" [suman-" + reporterName + "] "))
+        info: console.log.bind(console, " [suman @" + reporterName + "] "),
+        warning: console.error.bind(console, chalk.yellow(" [suman @" + reporterName + "] ")),
+        error: console.error.bind(console, chalk.red(" [suman @" + reporterName + "] ")),
+        good: console.error.bind(console, chalk.cyan(" [suman @" + reporterName + "] ")),
+        veryGood: console.log.bind(console, chalk.green(" [suman @" + reporterName + "] "))
     };
 };
 
@@ -52002,8 +52003,8 @@ module.exports = {
   },
 
   watch: {
-    options:{
-       // incomplete
+    options: {
+      // incomplete
     },
     per: {
       'zoom': {
@@ -52035,8 +52036,10 @@ module.exports = {
   },
 
   reporters: {
-    // usage: $ suman --reporters tap
-    'tap': 'suman-reporters/modules/tap-reporter'  // the value is simply passed to require()
+    // usage: $ suman --reporter=tap
+    map: {
+      'tap': 'suman-reporters/modules/tap-reporter'  // the value is simply passed to require()
+    }
   },
 
   servers: {   // list of servers to output test result data to, with the os.hostname() as the key
@@ -66240,7 +66243,7 @@ exports.makeDescribe = function (suman, gracefulExit, TestBlock, notifyParentTha
         var isAsync = su.isAsyncFn(cb);
         if (isGenerator || isAsync) {
             var msg = suman_constants_1.constants.ERROR_MESSAGES.INVALID_FUNCTION_TYPE_USAGE;
-            console.log('\n\n' + msg + '\n\n');
+            console.log('\n' + msg + '\n');
             console.error(new Error(' => Suman usage error => invalid arrow/generator function usage.').stack);
             process.exit(suman_constants_1.constants.EXIT_CODES.INVALID_ARROW_FUNCTION_USAGE);
             return;
@@ -68086,7 +68089,7 @@ exports.default = function (s, opts) {
         return;
     }
     if (_suman.inceptionLevel < 1) {
-        log.error("\"" + reporterName + "\" warning: suman inception level is 0, we may not need to load this reporter.");
+        log.warning("\"" + reporterName + "\" warning: suman inception level is 0, we may not need to load this reporter.");
     }
     log.info("loading " + reporterName + ".");
     loaded = true;
