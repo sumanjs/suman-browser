@@ -49,7 +49,7 @@ const sumanTestRegex = /'<suman-test>'/;
 */
 
 const getTopHtml = function () {
-
+  
   return [
     '<!DOCTYPE html>',
     '<html lang="en">',
@@ -70,9 +70,9 @@ const getBottomHtml = function () {
 };
 
 const getEmbeddedScript = function (port: number, id: number, sumanConfigStr: string, sumanOptsStr: string) {
-
+  
   const timestamp = Date.now();
-
+  
   return [
     '<script>',
     `window.__suman = window.__suman || {};\n`,
@@ -85,7 +85,7 @@ const getEmbeddedScript = function (port: number, id: number, sumanConfigStr: st
     `window.__suman.sumanOpts=${sumanOptsStr};\n`,
     '</script>'
   ];
-
+  
 };
 
 const getSumanLibScript = function (cb: Function) {
@@ -96,68 +96,70 @@ const getSumanLibScript = function (cb: Function) {
     if (err) {
       return cb(err);
     }
-
+    
     cb(null, [
       '<script>',
       String(data),
       '</script>'
     ]);
-
+    
   });
 };
 
 const getWebpackBuild = function (sumanHelperDir: string) {
-
+  
   return function (cb: Function) {
-
+    
     let p = path.resolve(sumanHelperDir + '/browser/builds/browser-tests.js');
-
+    
     fs.readFile(p, 'utf8', function (err: Error, data: string) {
       if (err) {
         return cb(err);
       }
-
+      
       cb(null, [
         '<script>',
         String(data),
         '</script>'
       ]);
-
+      
     });
   }
 };
 
 export const makeGetBrowserStream = function (sumanHelperDir: string, sumanConf: ISumanConfig, sumanOpts: ISumanOpts) {
-
+  
   const sumanOptsStr = su.customStringify(sumanOpts);
   const sumanConfigStr = su.customStringify(sumanConf);
-
+  
   return function getBrowserStream(port: number, id: number, cb: Function) {
-
+    
     async.parallel([
-
-      getSumanLibScript,
-      getWebpackBuild(sumanHelperDir)
-
-    ], function (err: Error, results: any) {
-
-      if (err) {
-        return cb(err);
-      }
-
-      // join all results together
-      const all = <Array<Array<string>>> [
-        getTopHtml(),
-        getEmbeddedScript(port, id, sumanConfigStr, sumanOptsStr),
-        results,
-        getBottomHtml()
-      ];
-
-      const allStr = _.flattenDeep(all.reduce((a, b) => a.concat(b), []));
-      cb(null, allStr);
-
-    })
-
+        
+        getSumanLibScript,
+        getWebpackBuild(sumanHelperDir)
+      
+      ],
+      
+      function (err: Error, results: any) {
+        
+        if (err) {
+          return cb(err);
+        }
+        
+        // join all results together
+        const all = <Array<Array<string>>> [
+          getTopHtml(),
+          getEmbeddedScript(port, id, sumanConfigStr, sumanOptsStr),
+          results,
+          getBottomHtml()
+        ];
+        
+        const allStr = _.flattenDeep(all.reduce((a, b) => a.concat(b), []));
+        cb(null, allStr);
+        
+      })
+    
   }
-
+  
 };
