@@ -89,7 +89,9 @@ const getEmbeddedScript = function (port: number, id: number, sumanConfigStr: st
 };
 
 const getSumanLibScript = function (cb: Function) {
+  
   let p = path.resolve(__dirname + '/dist/suman.js');
+  
   fs.readFile(p, 'utf8', function (err: Error, data: string) {
     if (err) {
       return cb(err);
